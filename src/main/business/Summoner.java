@@ -13,12 +13,12 @@ import java.util.Objects;
  */
 public class Summoner {
     
-    private int id;
-    private int accountId;
+    private long id;
+    private long accountId;
     private String name;
     private int profileIconId;
     private long revisionDate;
-    private int summonerLevel;
+    private long summonerLevel;
     
     public Summoner(){
         this.id = -1;
@@ -29,7 +29,7 @@ public class Summoner {
         this.summonerLevel = -1;
     }
     
-    public Summoner(int id, int accountId, String name, int profileIconId, long revisionDate, int summonerLevel){
+    public Summoner(long id, long accountId, String name, int profileIconId, long revisionDate, long summonerLevel){
         this.id = id;
         this.accountId = accountId;
         this.name = name;
@@ -38,19 +38,19 @@ public class Summoner {
         this.summonerLevel = summonerLevel;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getAccountId() {
+    public long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(long accountId) {
         this.accountId = accountId;
     }
 
@@ -78,22 +78,23 @@ public class Summoner {
         this.revisionDate = revisionDate;
     }
 
-    public int getSummonerLevel() {
+    public long getSummonerLevel() {
         return summonerLevel;
     }
 
-    public void setSummonerLevel(int summonerLevel) {
+    public void setSummonerLevel(long summonerLevel) {
         this.summonerLevel = summonerLevel;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 89 * hash + this.id;
-        hash = 89 * hash + this.accountId;
-        hash = 89 * hash + Objects.hashCode(this.name);
-        hash = 89 * hash + this.profileIconId;
-        hash = 89 * hash + this.summonerLevel;
+        int hash = 7;
+        hash = 97 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 97 * hash + (int) (this.accountId ^ (this.accountId >>> 32));
+        hash = 97 * hash + Objects.hashCode(this.name);
+        hash = 97 * hash + this.profileIconId;
+        hash = 97 * hash + (int) (this.revisionDate ^ (this.revisionDate >>> 32));
+        hash = 97 * hash + (int) (this.summonerLevel ^ (this.summonerLevel >>> 32));
         return hash;
     }
 
@@ -109,6 +110,9 @@ public class Summoner {
             return false;
         }
         final Summoner other = (Summoner) obj;
+        if (this.id != other.id) {
+            return false;
+        }
         if (this.accountId != other.accountId) {
             return false;
         }
@@ -118,8 +122,5 @@ public class Summoner {
     @Override
     public String toString() {
         return "Summoner{" + "id=" + id + ", accountId=" + accountId + ", name=" + name + ", profileIconId=" + profileIconId + ", revisionDate=" + revisionDate + ", summonerLevel=" + summonerLevel + '}';
-    }
-
-    
-    
+    } 
 }

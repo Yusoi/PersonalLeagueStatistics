@@ -13,8 +13,13 @@ import main.data.APIWrapper;
  * @author yusoi
  */
 public class PLS {
+    
+    /*
+     * API KEY (VERY IMPORTANT!)
+     */
     private static final String key = "RGAPI-cffcfa1b-2bfd-4b4b-86f9-0d8014d64289";
 
+    
     private APIWrapper wrapper;
 
     public PLS(){
@@ -43,7 +48,6 @@ public class PLS {
             
             String topic = value[0].replaceAll("\"", "");
             String result = value[1].replaceAll("\"", "");
-            System.out.println(topic+" "+result+"\n");
             
             switch(topic){
                 case "id": s.setId(Integer.parseInt(result)); break;
