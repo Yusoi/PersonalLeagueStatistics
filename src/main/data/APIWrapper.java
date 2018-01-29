@@ -65,7 +65,7 @@ public class APIWrapper {
         return -1;
     }
 
-    public String getChampionMastery(long champion, String summoner){
+    public String getSummonerInfo(String summoner){
         try {
             String url = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/"+ summoner +"?api_key="+this.key;
 
@@ -93,7 +93,7 @@ public class APIWrapper {
             //print result
             System.out.println(response.toString());
 
-            return url;
+            return response.toString();
 
         }catch(MalformedURLException e){
             e.printStackTrace();
