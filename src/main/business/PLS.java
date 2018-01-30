@@ -17,7 +17,7 @@ public class PLS {
     /*
      * API KEY (VERY IMPORTANT!)
      */
-    private static final String key = "RGAPI-cffcfa1b-2bfd-4b4b-86f9-0d8014d64289";
+    private static final String key = "YOUR-API-KEY-HERE";
 
     
     private APIWrapper wrapper;
@@ -25,12 +25,14 @@ public class PLS {
     public PLS(){
         this.wrapper = new APIWrapper(this.key);
 
-        summonerStringParser(this.getSummonerInfo("Yusoi"));
+        summonerStringParser("Yusoi", "euw1");
         
     }
     
-    public Summoner summonerStringParser(String summonerInfo){
+    public Summoner summonerStringParser(String summonerName, String region){
         Summoner s = new Summoner();
+        
+        String summonerInfo = wrapper.getSummonerInfo(summonerName,region);
         
         //Takes off the brackets
         String[] split1 = summonerInfo.split(Pattern.quote("{"));
@@ -60,9 +62,5 @@ public class PLS {
         }
         
         return s;
-    }
-    
-    public String getSummonerInfo(String summonerName){
-        return wrapper.getSummonerInfo(summonerName);
     }
 }

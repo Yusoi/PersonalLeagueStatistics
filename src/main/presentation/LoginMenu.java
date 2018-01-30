@@ -93,8 +93,24 @@ public class LoginMenu extends javax.swing.JFrame implements WindowListener{
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        String username = usernameTextField.getText();
+        String summonerName = usernameTextField.getText();
+        String regionBox = (String) regionComboBox.getSelectedItem();
+        String region = null;
         
+        switch (regionBox) {
+            case "EUW": region = "euw1"; break;
+        }
+        
+        long summonerId = facade.summonerStringParser(summonerName,region).getId();
+        
+        
+        if(summonerId != -1){
+            this.setVisible(false);
+            //Open login window and center it.
+            MainMenu window = new MainMenu(facade,summonerId);
+            window.setVisible(true);
+            window.setLocationRelativeTo(null);
+        }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     

@@ -24,9 +24,9 @@ public class APIWrapper {
         this.key = key;
     }
 
-    public String getSummonerInfo(String summoner){
+    public String getSummonerInfo(String summoner, String region){
         try {
-            String url = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/"+ summoner +"?api_key="+this.key;
+            String url = "https://"+ region +".api.riotgames.com/lol/summoner/v3/summoners/by-name/"+ summoner +"?api_key="+this.key;
 
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
