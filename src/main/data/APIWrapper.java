@@ -24,9 +24,48 @@ public class APIWrapper {
         this.key = key;
     }
 
-    public String getSummonerInfo(String summoner, String region){
+    public String getSummonerInfo(String summoner, String region) throws IOException{
         try {
             String url = "https://"+ region +".api.riotgames.com/lol/summoner/v3/summoners/by-name/"+ summoner +"?api_key="+this.key;
+
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+            con.setRequestMethod("GET");
+
+            con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36");
+
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            //print result
+            System.out.println(response.toString());
+
+            return response.toString();
+
+        }catch(MalformedURLException e){
+            e.printStackTrace();
+        }catch(IOException e){
+            throw(e);
+        }
+
+        return null;
+    }
+    
+    public String getGameVersion(String region){
+        try {
+            String url = "https://"+region+".api.riotgames.com/lol/static-data/v3/versions?api_key="+this.key;
 
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -62,4 +101,6 @@ public class APIWrapper {
 
         return null;
     }
+    
+    
 }

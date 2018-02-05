@@ -7,7 +7,9 @@ package main.presentation;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 import main.business.PLS;
+import main.business.Summoner;
 
 /**
  *
@@ -16,14 +18,17 @@ import main.business.PLS;
 public class LoginMenu extends javax.swing.JFrame implements WindowListener{
 
     private PLS facade;
+    private String version;
     
     /**
      * Creates new form LoginMenu
      */
     public LoginMenu(PLS facade) {
         this.facade = facade;
+        this.version = this.facade.versionStringParser("na1");
         
         initComponents();
+        errorMessage1.setVisible(false);
     }
 
     /**
@@ -40,6 +45,7 @@ public class LoginMenu extends javax.swing.JFrame implements WindowListener{
         jLabel2 = new javax.swing.JLabel();
         regionComboBox = new javax.swing.JComboBox<>();
         loginButton = new javax.swing.JButton();
+        errorMessage1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
@@ -57,6 +63,10 @@ public class LoginMenu extends javax.swing.JFrame implements WindowListener{
             }
         });
 
+        errorMessage1.setForeground(new java.awt.Color(255, 0, 0));
+        errorMessage1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        errorMessage1.setText("Invalid Username or Region");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -67,10 +77,11 @@ public class LoginMenu extends javax.swing.JFrame implements WindowListener{
                     .addComponent(usernameTextField)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                     .addComponent(regionComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(errorMessage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -84,9 +95,11 @@ public class LoginMenu extends javax.swing.JFrame implements WindowListener{
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(regionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(errorMessage1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(loginButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -101,21 +114,29 @@ public class LoginMenu extends javax.swing.JFrame implements WindowListener{
             case "EUW": region = "euw1"; break;
         }
         
-        long summonerId = facade.summonerStringParser(summonerName,region).getId();
+        try{
+            Summoner summoner = facade.summonerStringParser(summonerName,region);
+            //String version = facade.versionStringParser(region);
         
-        
-        if(summonerId != -1){
-            this.setVisible(false);
-            //Open login window and center it.
-            MainMenu window = new MainMenu(facade,summonerId);
-            window.setVisible(true);
-            window.setLocationRelativeTo(null);
+            if(summoner.getId() != -1){
+                //Hides login window
+                this.setVisible(false);
+                
+                //Open Main Menu window and center it.
+                MainMenu window = new MainMenu(facade,summoner,version);
+                window.addWindowListener(this);
+                window.setVisible(true);
+                window.setLocationRelativeTo(null);
+            }
+        } catch(IOException e) {
+            errorMessage1.setVisible(true);
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel errorMessage1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton loginButton;
@@ -125,37 +146,38 @@ public class LoginMenu extends javax.swing.JFrame implements WindowListener{
 
     @Override
     public void windowOpened(WindowEvent we) {
-        this.setVisible(true);
-        usernameTextField.setText("");
+        
     }
 
     @Override
     public void windowClosing(WindowEvent we) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void windowClosed(WindowEvent we) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.setVisible(true);
+        usernameTextField.setText("");
+        errorMessage1.setVisible(false);
     }
 
     @Override
     public void windowIconified(WindowEvent we) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void windowDeiconified(WindowEvent we) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void windowActivated(WindowEvent we) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void windowDeactivated(WindowEvent we) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 }
